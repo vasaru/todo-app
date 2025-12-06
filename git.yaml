@@ -1,0 +1,25 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: todo-app
+spec:
+  source:
+    git:
+      uri: https://github.com/vasaru/todo-app.git
+      ref: main
+    type: Git
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: todo-app:latest
+  triggers:
+  - type: ConfigChange
+  - type: ImageChange
+  - type: GitHub
+    github:
+      secretReference:
+        name: github-webhook-secret
